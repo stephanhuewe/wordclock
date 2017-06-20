@@ -3,6 +3,7 @@ Autor: Raphael Hoeser
 Datum: 30.11.2013
 Version: 2.4
 Changelog: 12-Uhr-Bug ist jetzt gefixt (12:30-13:00 wird jetzt korrekt angezeigt)
+Changelog: Bugfix wegen "1 Uhr" und falscher Anzeige der Stunde bei fünf vor halb. (Stephan Hüwe)
 
 #####
 Das Projekt wird fuer den Raspberry Pi entwickelt.(Siehe: http://www.hoeser-medien.de/?p=960)
@@ -105,7 +106,12 @@ Ein Webserver ist ueberfluessig.
 				}
 				var now = new Date();
 
-				setLight(getHour(now)+"",true);
+				var h = getHour(now);
+				setLight(h+"",true);
+				if(h==1&&now.getMinutes()>=5) 
+				{
+					setLight("EINS",true);
+				}
 
 				min=getMinute(now);
 				for(ik=0;ik<min.length;ik++){
@@ -120,7 +126,7 @@ Ein Webserver ist ueberfluessig.
 				document.getElementById("minutes").style.bottom=-560+560/4*(now.getMinutes()%5)+"px";
 			}
 			function getHour(now){
-				if(now.getMinutes()<30){
+				if(now.getMinutes()<25){
 					if(now.getHours()%12==0){
 						return 12;
 					}
@@ -238,8 +244,8 @@ Ein Webserver ist ueberfluessig.
 			<br>
 				<span class="1">E</span>
 				<span class="1">I</span>
-				<span class="1">N</span>
-				<span class="1">S</span>
+				<span class="1">N</span>				
+	    			<span class="EINS">S</span>
 				<span>I</span>
 				<span>N</span>
 				<span>K</span>
